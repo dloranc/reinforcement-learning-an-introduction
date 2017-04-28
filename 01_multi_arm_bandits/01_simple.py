@@ -30,15 +30,16 @@ class Bandit:
 
     def choose_action(self):
         rand = np.random.uniform(0, 1)
-        means = self.get_means()
 
+        # 1 - epsilon
         if rand > self.epsilon:
             # exploit
-            argmax = np.argmax(means)
+            means = self.get_means()  # compute all means
+            argmax = np.argmax(means) # select arm with best estimated reward
             return argmax
         else:
             # explore
-            return randint(0, len(means) - 1)
+            return randint(0, len(self.rewards) - 1)
 
     def get_reward(self, action):
         return self.true_reward[action] + np.random.randn()
