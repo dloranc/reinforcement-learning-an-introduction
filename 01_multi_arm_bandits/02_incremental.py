@@ -54,10 +54,10 @@ if __name__ == '__main__':
     bandit = Bandit(arms=10, pulls=2000, epsilon=0.01)
     bandit.run()
 
-    for arm, pulls, true_reward in zip(range(1, len(bandit.rewards) + 1),
+    for arm, pulls, true_reward in zip(range(len(bandit.rewards)),
                                         bandit.action_count, bandit.true_reward):
         print "Arm {}\tpulls: {},\ttrue reward: {}". \
-            format(arm, int(pulls), true_reward)
+            format(arm + 1, int(pulls), true_reward)
 
     print "Best arm: {}".format(np.argmax(bandit.true_reward) + 1)
 
