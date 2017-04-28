@@ -29,10 +29,6 @@ class Bandit:
         return means
 
     def choose_action(self):
-        '''
-        e-greedy policy
-        '''
-
         rand = np.random.uniform(0, 1)
         means = self.get_means()
 
