@@ -1,5 +1,5 @@
 '''
-Multi-armed bandit with e-greedy policy
+Multi-armed bandit with e-greedy strategy
 With saving all rewards for each arm
 '''
 
@@ -31,7 +31,7 @@ class Bandit:
     def choose_action(self):
         rand = np.random.uniform(0, 1)
 
-        # 1 - epsilon
+        # select action with 1 - epsilon probability
         if rand > self.epsilon:
             # exploit
             means = self.get_means()  # compute all means

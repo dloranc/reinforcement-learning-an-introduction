@@ -1,5 +1,5 @@
 '''
-Multi-armed bandit with e-greedy policy
+Multi-armed bandit with e-greedy strategy
 With incremental implementation of sample averages
 '''
 
