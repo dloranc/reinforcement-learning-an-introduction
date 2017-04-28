@@ -1,3 +1,8 @@
+'''
+Multi-armed bandit with e-greedy policy
+With saving all rewards for each arm
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 from random import randint
@@ -55,6 +60,19 @@ class Bandit:
 
 
 if __name__ == '__main__':
+    # example bandit
+    bandit = Bandit(arms=10, pulls=2000, epsilon=0.01)
+    bandit.run()
+
+    for arm, reward, true_reward in zip(range(1, len(bandit.rewards) + 1),
+                                        bandit.rewards, bandit.true_reward):
+        pulls = len(reward)
+        print "Arm {} pulls: {}, true reward: {}". \
+            format(arm, pulls, true_reward)
+
+    print "Best arm: {}".format(np.argmax(bandit.true_reward) + 1)
+
+    # experiments
     pulls = 1000
     experiments = 2000
 
@@ -75,4 +93,4 @@ if __name__ == '__main__':
     plt.ylabel("Average reward")
     plt.xlabel("Steps")
     plt.legend()
-    plt.savefig('plot.png')
+    plt.savefig('01_plot.png')
