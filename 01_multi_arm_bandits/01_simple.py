@@ -17,7 +17,7 @@ class Bandit:
         self.history = []
 
         self.true_reward = [np.random.randn() for _ in range(self.arms)]
-        self.rewards = [[] for x in xrange(len(self.true_reward))]
+        self.rewards = [[] for _ in xrange(self.arms)]
 
     def get_means(self):
         means = np.zeros(self.arms)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     mean_outcomes = [np.zeros(pulls) for _ in epsilons]
 
-    for i in range(experiments):
+    for _ in range(experiments):
         for index, epsilon in zip(range(len(epsilons)), epsilons):
             bandit = Bandit(arms=10, pulls=pulls, epsilon=epsilon)
             bandit.run()
