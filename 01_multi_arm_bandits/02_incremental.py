@@ -16,6 +16,7 @@ class Bandit:
         self.pulls = pulls
         self.epsilon = epsilon
         self.history = []
+        self.best_action_count = []
 
         self.true_reward = [np.random.randn() for _ in range(self.arms)]
         self.rewards = np.zeros(self.arms)
@@ -43,6 +44,9 @@ class Bandit:
     def run(self):
         for t in range(self.pulls):
             action = self.choose_action()
+
+            self.best_action_count.append(np.argmax(self.true_reward) == action)
+
             reward = self.get_reward(action)
             self.save_reward(action, reward)
 
@@ -68,12 +72,14 @@ if __name__ == '__main__':
     epsilons = [0.01, 0.1, 0]
 
     mean_outcomes = [np.zeros(pulls) for _ in epsilons]
+    best_action_count = [np.zeros(pulls) for _ in epsilons]
 
     for i in range(experiments):
         for index, epsilon in zip(range(len(epsilons)), epsilons):
             bandit = Bandit(arms=10, pulls=pulls, epsilon=epsilon)
             bandit.run()
             mean_outcomes[index] += bandit.history
+            best_action_count[index] += bandit.best_action_count
 
     for index, epsilon in zip(range(len(epsilons)), epsilons):
         mean_outcomes[index] /= experiments
@@ -82,4 +88,14 @@ if __name__ == '__main__':
     plt.ylabel("Average reward")
     plt.xlabel("Steps")
     plt.legend()
-    plt.savefig('02_plot.png')
+    plt.savefig('02_average_reward.png')
+    plt.clf()
+
+    for index, epsilon in zip(range(len(epsilons)), epsilons):
+        best_action_count[index] /= experiments
+        best_action_count[index] *= 100
+        plt.plot(best_action_count[index], label="epsilon: " + str(epsilon))
+    plt.ylabel("% Optimal action")
+    plt.xlabel("Steps")
+    plt.legend()
+    plt.savefig('02_optimal_action.png')
