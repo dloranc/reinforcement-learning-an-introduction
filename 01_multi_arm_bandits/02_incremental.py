@@ -17,9 +17,11 @@ class Bandit:
         self.epsilon = epsilon
         self.history = []
         self.best_action_count = []
+        self.selected_actions = []
 
         self.true_reward = [np.random.randn() for _ in range(self.arms)]
         self.rewards = np.zeros(self.arms)
+        self.t_rewards = [[] for _ in xrange(self.arms)]
 
     def choose_action(self):
         rand = np.random.uniform(0, 1)
@@ -41,9 +43,14 @@ class Bandit:
             1. / self.action_count[action] * \
             (reward - self.rewards[action])
 
+        self.t_rewards[action].append(reward)
+        for i in [x for x in xrange(self.arms) if x != action]:
+            self.t_rewards[i].append(None)
+
     def run(self):
         for t in range(self.pulls):
             action = self.choose_action()
+            self.selected_actions.append(action)
 
             self.best_action_count.append(np.argmax(self.true_reward) == action)
 
@@ -55,7 +62,7 @@ class Bandit:
 
 if __name__ == '__main__':
     # example bandit
-    bandit = Bandit(arms=10, pulls=2000, epsilon=0.01)
+    bandit = Bandit(arms=10, pulls=2000, epsilon=0)
     bandit.run()
 
     for arm, pulls, true_reward in zip(range(len(bandit.rewards)),
@@ -63,7 +70,30 @@ if __name__ == '__main__':
         print "Arm {}\tpulls: {},\ttrue reward: {}". \
             format(arm + 1, int(pulls), true_reward)
 
-    print "Best arm: {}".format(np.argmax(bandit.true_reward) + 1)
+    best_arm = np.argmax(bandit.true_reward) + 1
+    print "Best arm: {}".format(best_arm)
+
+    fig = plt.figure(figsize=(11, 8))
+    ax = plt.subplot(211)
+    ax.set_title('Best arm: {}'.format(best_arm), fontsize=14, fontweight='bold')
+
+    for i, action in zip(range(bandit.arms), bandit.t_rewards):
+        plt.plot(action, '.', label="Action {}".format(i + 1))
+
+    plt.ylabel("Rewards")
+    plt.xlabel("Steps")
+    plt.legend()
+
+    plt.subplot(212)
+    plt.plot([a + 1 for a in bandit.selected_actions],
+             'r.', label="Selected actions")
+
+    plt.ylabel("Actions")
+    plt.xlabel("Steps")
+    plt.yticks(range(1, bandit.arms + 1))
+    plt.legend()
+    plt.savefig('02_rewards.png')
+    plt.clf()
 
     # experiments
     pulls = 1000
