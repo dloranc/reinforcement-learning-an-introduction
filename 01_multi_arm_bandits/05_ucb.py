@@ -73,7 +73,7 @@ class Bandit:
 
 if __name__ == '__main__':
     # example bandit
-    bandit = Bandit(arms=10, pulls=20000, epsilon=0.01, c=2)
+    bandit = Bandit(arms=10, pulls=2000, epsilon=0.01, c=2)
     bandit.run()
 
     for arm, pulls, true_reward in zip(
