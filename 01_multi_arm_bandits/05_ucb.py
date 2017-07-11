@@ -106,7 +106,7 @@ if __name__ == '__main__':
     plt.xlabel("Steps")
     plt.yticks(range(1, bandit.arms + 1))
     plt.legend()
-    plt.savefig('05_rewards.png')
+    plt.savefig('plots/05_rewards.png')
 
     # experiments
     pulls = 1000
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     plt.ylabel("Average reward")
     plt.xlabel("Steps")
     plt.legend()
-    plt.savefig('05_average_reward.png')
+    plt.savefig('plots/05_average_reward.png')
 
     plt.figure(figsize=(11, 4))
     for index, setting in zip(range(len(settings)), settings):
@@ -145,4 +145,4 @@ if __name__ == '__main__':
     plt.ylabel("% Optimal action")
     plt.xlabel("Steps")
     plt.legend()
-    plt.savefig('05_optimal_action.png')
+    plt.savefig('plots/05_optimal_action.png')
